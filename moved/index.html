@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- Published at the OLD address (ortal-libon.github.io/brainweb) after the move to brainweb-3d.github.io.
+     Deletes the Claude pairing token and the API key that BrainWeb saved in this browser, then goes to the new site.
+     Progress, settings and tests saved here are left alone. Also publish a copy as 404.html. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>BrainWeb has moved</title>
+<style>
+  body { font: 18px/1.6 system-ui, sans-serif; background: #0f172a; color: #f1f5f9; display: grid; place-items: center; min-height: 100vh; margin: 0; text-align: center; }
+  main { padding: 24px; max-width: 34rem; } a { color: #93c5fd; }
+</style>
+</head>
+<body>
+<main>
+  <p>BrainWeb has moved to <a class="go" href="https://brainweb-3d.github.io/">brainweb-3d.github.io</a>. Please update your bookmark. The Claude connection and any API key saved here were removed from this browser.</p>
+  <p lang="he" dir="rtl">BrainWeb עבר לכתובת <a class="go" dir="ltr" href="https://brainweb-3d.github.io/">brainweb-3d.github.io</a>. עדכנו את הסימנייה. החיבור ל-Claude ומפתח ה-API, אם נשמרו כאן, נמחקו מהדפדפן הזה.</p>
+</main>
+<script>
+  const NEW = 'https://brainweb-3d.github.io/';
+  // Remove one field from a saved object; if it cannot be read, remove the whole entry.
+  function drop(key, field) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw == null) return;
+      let o = null;
+      try { o = JSON.parse(raw); } catch { /* unreadable: removed below */ }
+      if (!o || typeof o !== 'object') { localStorage.removeItem(key); return; }
+      delete o[field];
+      localStorage.setItem(key, JSON.stringify(o));
+    } catch { /* storage unavailable: nothing saved */ }
+  }
+  drop('brainweb.ai', 'key');
+  drop('brainweb.aiPrefs', 'claudeToken');
+  const to = NEW + (/^#\//.test(location.hash) ? location.hash : '');
+  document.querySelectorAll('a.go').forEach((a) => { a.href = to; });
+  setTimeout(() => location.replace(to), 4000);
+</script>
+</body>
+</html>
